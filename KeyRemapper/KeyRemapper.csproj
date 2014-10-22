@@ -79,11 +79,38 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="InputDevice.cs" />
-    <Compile Include="MappedKey.cs" />
+    <Compile Include="KeyDetect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KeyDetect.Designer.cs">
+      <DependentUpon>KeyDetect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mapper.cs" />
+    <Compile Include="MapperConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MapperConfig.Designer.cs">
+      <DependentUpon>MapperConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MapSetup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MapSetup.Designer.cs">
+      <DependentUpon>MapSetup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyDetect.resx">
+      <DependentUpon>KeyDetect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapperConfig.resx">
+      <DependentUpon>MapperConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MapSetup.resx">
+      <DependentUpon>MapSetup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -124,12 +151,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="D:\Downloads\Interception-master\Interception-master\windows\interception.vcxproj">
-      <Project>{e0d6ca48-741e-4640-badd-e132f39405d4}</Project>
-      <Name>interception</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
