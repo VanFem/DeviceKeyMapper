@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using KeyRemapper;
 using KeyRemapper.Mapper;
 
@@ -10,6 +14,9 @@ namespace RawInput
         private Mapper mapper = new Mapper();
         private InputDevice id;
         private int NumberOfKeyboards;
+        private BackgroundWorker bw;
+        private static readonly string ConfigFileName = "map.config";
+        
         
 
         public Form1()
@@ -21,14 +28,20 @@ namespace RawInput
             // InputDevice KeyPressed event
             id = new InputDevice( Handle );
             NumberOfKeyboards = id.EnumerateDevices();
-            cmbInputSelect.Items.AddRange(id.GetDeviceList());
-            if (cmbInputSelect.Items.Count > 0)
-            {
-                cmbInputSelect.SelectedIndex = 0;
-            }
+            bw = new BackgroundWorker();
+            bw.DoWork += RunMapping;
+            bw.RunWorkerCompleted += WorkCompleted;
             id.KeyPressed += m_KeyPressed;
+            ReadConfigFromFile();
         }
-        
+
+        private void WorkCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            button1.Text = "Arm mapping";
+            mapper.Armed = false;
+            button1.Enabled = true;
+        }
+
         // The WndProc is overridden to allow InputDevice to intercept
         // messages to the window and thus catch WM_INPUT messages
         protected override void WndProc( ref Message message )
@@ -59,11 +72,55 @@ namespace RawInput
 
         private void btnMap_Click(object sender, System.EventArgs e)
         {
-            mapper.MapDefinitions.Add(new KeyDef() { DeviceInfo = "Device1", Key = Keys.A }, new KeyDef() { DeviceInfo = "Device2", Key = Keys.B });
-            mapper.MapDefinitions.Add(new KeyDef() { DeviceInfo = "Device1", Key = Keys.C }, new KeyDef() { DeviceInfo = "Device2", Key = Keys.D });
             var mapperConfig = new MapperConfig(mapper);
             mapperConfig.ShowDialog();
+            WriteConfigToFile();
+        }
 
+        private void button1_Click(object sender, System.EventArgs e)
+        {
+            if (mapper.Armed)
+            {
+                mapper.Armed = false;
+                button1.Text = "Stopping...";
+                button1.Enabled = false;
+                return;
+            }
+            button1.Text = "Disarm mapping";
+            bw.RunWorkerAsync();
+        }
+
+        private void RunMapping(object sender, DoWorkEventArgs doWorkEventArgs)
+        {
+            var keyInterceptor = new KeyInterceptor();
+            mapper.Armed = true;
+            keyInterceptor.RunMapping(mapper);
+        }
+
+        private void WriteConfigToFile()
+        {
+            var xser = new XmlSerializer(typeof(MapperConfiguration));
+            TextWriter tw = new StreamWriter(ConfigFileName, false);
+            xser.Serialize(tw, mapper.CreateConfig());
+        }
+
+        private void ReadConfigFromFile()
+        {
+            if (File.Exists(ConfigFileName))
+            {
+                try
+                {
+                    var xser = new XmlSerializer(typeof (MapperConfiguration));
+                    using (TextReader textreader = new StreamReader(ConfigFileName))
+                    {
+                        mapper.ReadConfig((MapperConfiguration) xser.Deserialize(textreader));
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Cannot read configuration: " + e.Message);
+                }
+            }
         }
 
     }

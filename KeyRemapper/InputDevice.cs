@@ -249,7 +249,8 @@ namespace RawInput
 
         public string[] GetDeviceList()
         {
-            return deviceList.Values.Cast<DeviceInfo>().Select(di => di.deviceHandle.ToString()).ToArray();
+            return new[] {""};
+            return deviceList.Values.Cast<DeviceInfo>().Select(di => di.deviceName.ToString()).ToArray();
         }
 
         #region InputDevice( IntPtr hwnd )

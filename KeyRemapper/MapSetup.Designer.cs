@@ -29,39 +29,39 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cmbDevice1 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.btnDetectKey1 = new System.Windows.Forms.Button();
+            this.btnRefresh1 = new System.Windows.Forms.Button();
+            this.btnDetectDevice1 = new System.Windows.Forms.Button();
+            this.btnDetectBoth1 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cmbDevice1 = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
+            this.btnDetectKey2 = new System.Windows.Forms.Button();
+            this.btnRefresh2 = new System.Windows.Forms.Button();
+            this.btnDetectDevice2 = new System.Windows.Forms.Button();
+            this.btnDetectBoth2 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
+            this.cmbDevice2 = new System.Windows.Forms.ComboBox();
+            this.btnOK = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.lblKey1 = new System.Windows.Forms.Label();
+            this.lblKey2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.button4);
-            this.groupBox1.Controls.Add(this.button3);
-            this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.lblKey1);
+            this.groupBox1.Controls.Add(this.btnDetectKey1);
+            this.groupBox1.Controls.Add(this.btnRefresh1);
+            this.groupBox1.Controls.Add(this.btnDetectDevice1);
+            this.groupBox1.Controls.Add(this.btnDetectBoth1);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.comboBox1);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.cmbDevice1);
@@ -73,41 +73,45 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Map from:";
             // 
-            // cmbDevice1
+            // btnDetectKey1
             // 
-            this.cmbDevice1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbDevice1.FormattingEnabled = true;
-            this.cmbDevice1.Location = new System.Drawing.Point(94, 19);
-            this.cmbDevice1.Name = "cmbDevice1";
-            this.cmbDevice1.Size = new System.Drawing.Size(520, 21);
-            this.cmbDevice1.TabIndex = 0;
+            this.btnDetectKey1.Location = new System.Drawing.Point(94, 46);
+            this.btnDetectKey1.Name = "btnDetectKey1";
+            this.btnDetectKey1.Size = new System.Drawing.Size(75, 23);
+            this.btnDetectKey1.TabIndex = 8;
+            this.btnDetectKey1.Text = "Detect";
+            this.btnDetectKey1.UseVisualStyleBackColor = true;
+            this.btnDetectKey1.Click += new System.EventHandler(this.btnDetectKey1_Click);
             // 
-            // label1
+            // btnRefresh1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Source device:";
+            this.btnRefresh1.Location = new System.Drawing.Point(701, 17);
+            this.btnRefresh1.Name = "btnRefresh1";
+            this.btnRefresh1.Size = new System.Drawing.Size(75, 23);
+            this.btnRefresh1.TabIndex = 7;
+            this.btnRefresh1.Text = "Refresh";
+            this.btnRefresh1.UseVisualStyleBackColor = true;
+            this.btnRefresh1.Click += new System.EventHandler(this.btnRefresh1_Click);
             // 
-            // label2
+            // btnDetectDevice1
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(5, 48);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(86, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Key to map from:";
+            this.btnDetectDevice1.Location = new System.Drawing.Point(620, 17);
+            this.btnDetectDevice1.Name = "btnDetectDevice1";
+            this.btnDetectDevice1.Size = new System.Drawing.Size(75, 23);
+            this.btnDetectDevice1.TabIndex = 6;
+            this.btnDetectDevice1.Text = "Detect";
+            this.btnDetectDevice1.UseVisualStyleBackColor = true;
+            this.btnDetectDevice1.Click += new System.EventHandler(this.btnDetectDevice1_Click);
             // 
-            // comboBox1
+            // btnDetectBoth1
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(94, 45);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 3;
+            this.btnDetectBoth1.Location = new System.Drawing.Point(94, 82);
+            this.btnDetectBoth1.Name = "btnDetectBoth1";
+            this.btnDetectBoth1.Size = new System.Drawing.Size(155, 23);
+            this.btnDetectBoth1.TabIndex = 5;
+            this.btnDetectBoth1.Text = "Detect device and key";
+            this.btnDetectBoth1.UseVisualStyleBackColor = true;
+            this.btnDetectBoth1.Click += new System.EventHandler(this.btnDetectBoth1_Click);
             // 
             // label3
             // 
@@ -118,53 +122,44 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "Or ";
             // 
-            // button1
+            // label2
             // 
-            this.button1.Location = new System.Drawing.Point(94, 82);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(155, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Detect device and key";
-            this.button1.UseVisualStyleBackColor = true;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(5, 48);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(86, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Key to map from:";
             // 
-            // button2
+            // label1
             // 
-            this.button2.Location = new System.Drawing.Point(620, 17);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "Detect";
-            this.button2.UseVisualStyleBackColor = true;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(79, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Source device:";
             // 
-            // button3
+            // cmbDevice1
             // 
-            this.button3.Location = new System.Drawing.Point(701, 17);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 7;
-            this.button3.Text = "Refresh";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(221, 43);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 8;
-            this.button4.Text = "Detect";
-            this.button4.UseVisualStyleBackColor = true;
+            this.cmbDevice1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDevice1.FormattingEnabled = true;
+            this.cmbDevice1.Location = new System.Drawing.Point(94, 19);
+            this.cmbDevice1.Name = "cmbDevice1";
+            this.cmbDevice1.Size = new System.Drawing.Size(520, 21);
+            this.cmbDevice1.TabIndex = 0;
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.button5);
-            this.groupBox2.Controls.Add(this.button6);
-            this.groupBox2.Controls.Add(this.button7);
-            this.groupBox2.Controls.Add(this.button8);
+            this.groupBox2.Controls.Add(this.lblKey2);
+            this.groupBox2.Controls.Add(this.btnDetectKey2);
+            this.groupBox2.Controls.Add(this.btnRefresh2);
+            this.groupBox2.Controls.Add(this.btnDetectDevice2);
+            this.groupBox2.Controls.Add(this.btnDetectBoth2);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.comboBox2);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.comboBox3);
+            this.groupBox2.Controls.Add(this.cmbDevice2);
             this.groupBox2.Location = new System.Drawing.Point(0, 129);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(782, 123);
@@ -172,41 +167,45 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Map to:";
             // 
-            // button5
+            // btnDetectKey2
             // 
-            this.button5.Location = new System.Drawing.Point(221, 43);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 8;
-            this.button5.Text = "Detect";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btnDetectKey2.Location = new System.Drawing.Point(94, 46);
+            this.btnDetectKey2.Name = "btnDetectKey2";
+            this.btnDetectKey2.Size = new System.Drawing.Size(75, 23);
+            this.btnDetectKey2.TabIndex = 8;
+            this.btnDetectKey2.Text = "Detect";
+            this.btnDetectKey2.UseVisualStyleBackColor = true;
+            this.btnDetectKey2.Click += new System.EventHandler(this.btnDetectKey2_Click);
             // 
-            // button6
+            // btnRefresh2
             // 
-            this.button6.Location = new System.Drawing.Point(701, 17);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 7;
-            this.button6.Text = "Refresh";
-            this.button6.UseVisualStyleBackColor = true;
+            this.btnRefresh2.Location = new System.Drawing.Point(701, 17);
+            this.btnRefresh2.Name = "btnRefresh2";
+            this.btnRefresh2.Size = new System.Drawing.Size(75, 23);
+            this.btnRefresh2.TabIndex = 7;
+            this.btnRefresh2.Text = "Refresh";
+            this.btnRefresh2.UseVisualStyleBackColor = true;
+            this.btnRefresh2.Click += new System.EventHandler(this.btnRefresh2_Click);
             // 
-            // button7
+            // btnDetectDevice2
             // 
-            this.button7.Location = new System.Drawing.Point(620, 17);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 6;
-            this.button7.Text = "Detect";
-            this.button7.UseVisualStyleBackColor = true;
+            this.btnDetectDevice2.Location = new System.Drawing.Point(620, 17);
+            this.btnDetectDevice2.Name = "btnDetectDevice2";
+            this.btnDetectDevice2.Size = new System.Drawing.Size(75, 23);
+            this.btnDetectDevice2.TabIndex = 6;
+            this.btnDetectDevice2.Text = "Detect";
+            this.btnDetectDevice2.UseVisualStyleBackColor = true;
+            this.btnDetectDevice2.Click += new System.EventHandler(this.btnDetectDevice2_Click);
             // 
-            // button8
+            // btnDetectBoth2
             // 
-            this.button8.Location = new System.Drawing.Point(94, 82);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(155, 23);
-            this.button8.TabIndex = 5;
-            this.button8.Text = "Detect device and key";
-            this.button8.UseVisualStyleBackColor = true;
+            this.btnDetectBoth2.Location = new System.Drawing.Point(94, 82);
+            this.btnDetectBoth2.Name = "btnDetectBoth2";
+            this.btnDetectBoth2.Size = new System.Drawing.Size(155, 23);
+            this.btnDetectBoth2.TabIndex = 5;
+            this.btnDetectBoth2.Text = "Detect device and key";
+            this.btnDetectBoth2.UseVisualStyleBackColor = true;
+            this.btnDetectBoth2.Click += new System.EventHandler(this.btnDetectBoth2_Click);
             // 
             // label4
             // 
@@ -216,15 +215,6 @@
             this.label4.Size = new System.Drawing.Size(21, 13);
             this.label4.TabIndex = 4;
             this.label4.Text = "Or ";
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(94, 45);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
-            this.comboBox2.TabIndex = 3;
             // 
             // label5
             // 
@@ -244,40 +234,60 @@
             this.label6.TabIndex = 1;
             this.label6.Text = "Source device:";
             // 
-            // comboBox3
+            // cmbDevice2
             // 
-            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(94, 19);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(520, 21);
-            this.comboBox3.TabIndex = 0;
+            this.cmbDevice2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDevice2.FormattingEnabled = true;
+            this.cmbDevice2.Location = new System.Drawing.Point(94, 19);
+            this.cmbDevice2.Name = "cmbDevice2";
+            this.cmbDevice2.Size = new System.Drawing.Size(520, 21);
+            this.cmbDevice2.TabIndex = 0;
             // 
-            // button9
+            // btnOK
             // 
-            this.button9.Location = new System.Drawing.Point(620, 258);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(75, 23);
-            this.button9.TabIndex = 10;
-            this.button9.Text = "OK";
-            this.button9.UseVisualStyleBackColor = true;
+            this.btnOK.Location = new System.Drawing.Point(620, 258);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.Size = new System.Drawing.Size(75, 23);
+            this.btnOK.TabIndex = 10;
+            this.btnOK.Text = "OK";
+            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
-            // button10
+            // btnCancel
             // 
-            this.button10.Location = new System.Drawing.Point(701, 258);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(75, 23);
-            this.button10.TabIndex = 11;
-            this.button10.Text = "Cancel";
-            this.button10.UseVisualStyleBackColor = true;
+            this.btnCancel.Location = new System.Drawing.Point(701, 258);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 11;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // lblKey1
+            // 
+            this.lblKey1.AutoSize = true;
+            this.lblKey1.Location = new System.Drawing.Point(175, 51);
+            this.lblKey1.Name = "lblKey1";
+            this.lblKey1.Size = new System.Drawing.Size(118, 13);
+            this.lblKey1.TabIndex = 9;
+            this.lblKey1.Text = " [ Detect a key to map ]";
+            // 
+            // lblKey2
+            // 
+            this.lblKey2.AutoSize = true;
+            this.lblKey2.Location = new System.Drawing.Point(178, 51);
+            this.lblKey2.Name = "lblKey2";
+            this.lblKey2.Size = new System.Drawing.Size(115, 13);
+            this.lblKey2.TabIndex = 10;
+            this.lblKey2.Text = "[ Detect a key to map ]";
             // 
             // MapSetup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(783, 293);
-            this.Controls.Add(this.button10);
-            this.Controls.Add(this.button9);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnOK);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "MapSetup";
@@ -294,26 +304,26 @@
 
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ComboBox cmbDevice1;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnRefresh1;
+        private System.Windows.Forms.Button btnDetectDevice1;
+        private System.Windows.Forms.Button btnDetectBoth1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnDetectKey1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button btnDetectKey2;
+        private System.Windows.Forms.Button btnRefresh2;
+        private System.Windows.Forms.Button btnDetectDevice2;
+        private System.Windows.Forms.Button btnDetectBoth2;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.ComboBox cmbDevice2;
+        private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Label lblKey1;
+        private System.Windows.Forms.Label lblKey2;
 
     }
 }

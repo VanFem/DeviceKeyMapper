@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace KeyRemapper.Mapper
 {
-    public class KeyDef
+    [Serializable]
+    public class ConfigNode
     {
-        public ushort Key { get; set; }
-        public DeviceDef DeviceInfo { get; set; }
+        public ushort Key;
+        public string DeviceHID;
+        public int DeviceID;
     }
 }

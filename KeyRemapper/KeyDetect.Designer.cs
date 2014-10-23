@@ -49,6 +49,7 @@
             this.Controls.Add(this.label1);
             this.Name = "KeyDetect";
             this.Text = "Key detection";
+            this.Shown += new System.EventHandler(this.KeyDetect_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
