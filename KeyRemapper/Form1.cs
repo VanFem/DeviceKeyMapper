@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
+using KeyRemapper;
+using KeyRemapper.Mapper;
 
 namespace RawInput
 {
     public partial class Form1 : Form
     {
-        InputDevice id;
-        int NumberOfKeyboards;
+        private Mapper mapper = new Mapper();
+        private InputDevice id;
+        private int NumberOfKeyboards;
+        
 
         public Form1()
         {
@@ -55,6 +59,10 @@ namespace RawInput
 
         private void btnMap_Click(object sender, System.EventArgs e)
         {
+            mapper.MapDefinitions.Add(new KeyDef() { DeviceInfo = "Device1", Key = Keys.A }, new KeyDef() { DeviceInfo = "Device2", Key = Keys.B });
+            mapper.MapDefinitions.Add(new KeyDef() { DeviceInfo = "Device1", Key = Keys.C }, new KeyDef() { DeviceInfo = "Device2", Key = Keys.D });
+            var mapperConfig = new MapperConfig(mapper);
+            mapperConfig.ShowDialog();
 
         }
 

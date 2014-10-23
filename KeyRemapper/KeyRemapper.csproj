@@ -85,13 +85,14 @@
     <Compile Include="KeyDetect.Designer.cs">
       <DependentUpon>KeyDetect.cs</DependentUpon>
     </Compile>
-    <Compile Include="Mapper.cs" />
+    <Compile Include="Mapper\Mapper.cs" />
     <Compile Include="MapperConfig.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MapperConfig.Designer.cs">
       <DependentUpon>MapperConfig.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mapper\KeyDef.cs" />
     <Compile Include="MapSetup.cs">
       <SubType>Form</SubType>
     </Compile>
