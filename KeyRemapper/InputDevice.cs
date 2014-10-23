@@ -566,7 +566,13 @@ namespace RawInput
 			{
 				case WM_INPUT:
 		        {
-		            ProcessInputCommand( message );
+		            try
+		            {
+		                ProcessInputCommand(message);
+		            }
+		            catch
+		            {
+		            }
 		        }
 				break;
 			}
