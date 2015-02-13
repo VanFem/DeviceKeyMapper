@@ -9,6 +9,8 @@ namespace KeyRemapper.Mapper
 {
     public class KeyDef
     {
+        public bool IgnoreKey { get; set; }
+
         public ushort Key { get; set; }
         public bool FlagE0 { get; set; }
         public bool FlagE1 { get; set; }
@@ -16,7 +18,15 @@ namespace KeyRemapper.Mapper
 
         public bool KeyMatches(KeyDef otherKey)
         {
-            return (otherKey.Key == Key && otherKey.FlagE0 == FlagE0 && otherKey.FlagE1 == FlagE1);
+            return (otherKey.Key == Key && otherKey.FlagE0 == FlagE0 && otherKey.FlagE1 == FlagE1 && !otherKey.IgnoreKey);
+        }
+
+        public void MapKeyInto(KeyDef otherKey)
+        {
+            otherKey.Key = Key;
+            otherKey.FlagE0 = FlagE0;
+            otherKey.FlagE1 = FlagE1;
+            otherKey.IgnoreKey = IgnoreKey;
         }
     }
 }

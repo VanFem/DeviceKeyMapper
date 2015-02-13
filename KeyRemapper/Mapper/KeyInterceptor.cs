@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -390,8 +391,8 @@ namespace KeyRemapper.Mapper
                 kdef.DeviceInfo = new DeviceDef {DeviceIndex = device, HID = GetHardwareId(context, device)};
                 var kstroke =(InterceptionKeyStroke)Marshal.PtrToStructure(stroke, typeof (InterceptionKeyStroke));
                 kdef.Key = kstroke.code;
-                kdef.FlagE0 = (kstroke.state & (ushort)InterceptionKeyState.INTERCEPTION_KEY_E0) != 0;
-                kdef.FlagE1 = (kstroke.state & (ushort)InterceptionKeyState.INTERCEPTION_KEY_E1) != 0;
+                kdef.FlagE0 = IsE0(kstroke.state);
+                kdef.FlagE1 = IsE1(kstroke.state);
             }
             interception_destroy_context(context);
 
@@ -435,7 +436,7 @@ namespace KeyRemapper.Mapper
                             DeviceInfo = deviceHids.Single(d => d.DeviceIndex == device),
                             Key = kstroke.code,
                             FlagE0 = IsE0(kstroke.state),
-                            FlagE1 = IsE1(kstroke.state)
+                            FlagE1 = IsE1(kstroke.state),
                         });
                     if (deviceHids.Count(d => d.HID == newKey.DeviceInfo.HID) == 1)
                     {
@@ -447,10 +448,11 @@ namespace KeyRemapper.Mapper
                         interception_send(context, device, stroke, 1);
                         continue;
                     }
-                    
+                    Debug.Write(string.Format("Mapped code {0} status {1} to ",kstroke.code, kstroke.state));
                     kstroke.code = newKey.Key;
                     kstroke.state = SetState(InterceptionKeyState.INTERCEPTION_KEY_E0, newKey.FlagE0, kstroke.state);
                     kstroke.state = SetState(InterceptionKeyState.INTERCEPTION_KEY_E1, newKey.FlagE1, kstroke.state);
+                    Debug.WriteLine("{0}, {1}", kstroke.code, kstroke.state);
                     Marshal.StructureToPtr(kstroke, stroke, true);
                     interception_send(context, newKey.DeviceInfo.DeviceIndex, stroke, 1);
                 }
@@ -459,14 +461,21 @@ namespace KeyRemapper.Mapper
             
         }
 
+        
+
         private bool IsE0(ushort state)
         {
-            return (state & (ushort)InterceptionKeyState.INTERCEPTION_KEY_E0) == 0;
+            return (state & (ushort)InterceptionKeyState.INTERCEPTION_KEY_E0) != 0;
         }
 
         private bool IsE1(ushort state)
         {
-            return (state & (ushort)InterceptionKeyState.INTERCEPTION_KEY_E1) == 0;
+            return (state & (ushort)InterceptionKeyState.INTERCEPTION_KEY_E1) != 0;
+        }
+
+        private bool IsUp(ushort state)
+        {
+            return (state & (ushort)InterceptionKeyState.INTERCEPTION_KEY_UP) != 0;
         }
 
         private ushort SetState(InterceptionKeyState setState, bool toEnabled, ushort currentState)

@@ -29,8 +29,32 @@ namespace KeyRemapper
             {
                 get
                 {
-                    return string.Format("[  {0}  ] at {1}  -->  [  {2}  ] at {3}", KeyData.Key.Key, KeyData.Key.DeviceInfo,
-                        KeyData.Value.Key, KeyData.Value.DeviceInfo);
+                    if (!KeyData.Value.IgnoreKey)
+                    {
+                        return
+                            string.Format("[  {0}{6}{7} ({4}) ] at {1}  MAPPED TO  [  {2}{8}{9} ({5}) ] at {3}",
+                                KeyData.Key.Key,
+                                KeyData.Key.DeviceInfo,
+                                KeyData.Value.Key, KeyData.Value.DeviceInfo,
+                                KeyData.Key.Key < KeyInterceptor.kbdus.Count
+                                    ? Enum.GetName(typeof (Keys), KeyInterceptor.kbdus[KeyData.Key.Key])
+                                    : "--",
+                                KeyData.Value.Key < KeyInterceptor.kbdus.Count
+                                    ? Enum.GetName(typeof (Keys), KeyInterceptor.kbdus[KeyData.Value.Key])
+                                    : "--",
+                                KeyData.Key.FlagE0 ? "-E0" : "",
+                                KeyData.Key.FlagE1 ? "-E1" : "",
+                                KeyData.Value.FlagE0 ? "-E0" : "",
+                                KeyData.Value.FlagE1 ? "-E1" : "");
+                    }
+                    return string.Format("[  {0}{3}{4} ({2}) ] at {1}  IGNORED",
+                        KeyData.Key.Key,
+                        KeyData.Key.DeviceInfo,
+                        KeyData.Key.Key < KeyInterceptor.kbdus.Count
+                            ? Enum.GetName(typeof (Keys), KeyInterceptor.kbdus[KeyData.Key.Key])
+                            : "--",
+                        KeyData.Key.FlagE0 ? "-E0" : "",
+                        KeyData.Key.FlagE1 ? "-E1" : "");
                 }
             }
         }
@@ -63,32 +87,33 @@ namespace KeyRemapper
 
             if (mapSetupDialog.DialogResult == DialogResult.OK)
             {
-                if (MapperUnderSetup.MapDefinitions.Keys.Any(k => k.Key == mapSetupDialog.KeysUnderSetup.Key.Key && k.DeviceInfo.ToString() == mapSetupDialog.KeysUnderSetup.Key.DeviceInfo.ToString()))
-                {
-                    if (MessageBox.Show("Mapping for that key already exists. Do you want to replace the current one?",
-                        "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-                    {
-                        MapperUnderSetup.MapDefinitions.Remove(
-                            MapperUnderSetup.MapDefinitions.Keys.Single(
-                                k =>
-                                    k.Key == mapSetupDialog.KeysUnderSetup.Key.Key &&
-                                    k.DeviceInfo.ToString() == mapSetupDialog.KeysUnderSetup.Key.DeviceInfo.ToString()));
-
-                    }
-                    else
-                    {
-                        mapSetupDialog.Dispose();
-                        mapSetupDialog = null;
-                        return;
-                    }
-                }
-                MapperUnderSetup.MapDefinitions.Add(mapSetupDialog.KeysUnderSetup.Key,
-                    mapSetupDialog.KeysUnderSetup.Value);
+                AddMapping(mapSetupDialog.KeysUnderSetup);
                 SetDataForListBox();
             }
             mapSetupDialog.Dispose();
             mapSetupDialog = null;
+        }
 
+        private void AddMapping(KeyValuePair<KeyDef, KeyDef> keysUnderSetup)
+        {
+            if (MapperUnderSetup.MapDefinitions.Keys.Any(k => k.KeyMatches(keysUnderSetup.Key) && k.DeviceInfo.ToString() == keysUnderSetup.Key.DeviceInfo.ToString()))
+            {
+                if (MessageBox.Show("Mapping for that key already exists. Do you want to replace the current one?",
+                    "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                {
+                    MapperUnderSetup.MapDefinitions.Remove(
+                        MapperUnderSetup.MapDefinitions.Keys.Single(
+                            k =>
+                                keysUnderSetup.Key.KeyMatches(k) &&
+                                k.DeviceInfo.ToString() == keysUnderSetup.Key.DeviceInfo.ToString()));
+                }
+                else
+                {
+                    return;
+                }
+            }
+            MapperUnderSetup.MapDefinitions.Add(mapSetupDialog.KeysUnderSetup.Key,
+                mapSetupDialog.KeysUnderSetup.Value);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -103,6 +128,9 @@ namespace KeyRemapper
 
         private void button3_Click(object sender, EventArgs e)
         {
+            if (listBox1.SelectedValue == null) 
+                return;
+
             mapSetupDialog = new MapSetup( (KeyValuePair<KeyDef, KeyDef>)listBox1.SelectedValue );
             mapSetupDialog.ShowDialog();
 

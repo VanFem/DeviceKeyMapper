@@ -13,6 +13,17 @@ using RawInput;
 
 namespace KeyRemapper
 {
+
+    public enum KeyMapOptions
+    {
+        KeyUpDownToDifferent = 1,
+        KeyUp = 2,
+        KeyDown = 3,
+        KeyUpExclusive = 4,
+        KeyDownExclusive = 5,
+        KeyUpDownToOne = 6
+    }
+
     public partial class MapSetup : Form
     {
         private KeyInterceptor kInterceptor = new KeyInterceptor();
@@ -21,6 +32,7 @@ namespace KeyRemapper
         private List<DeviceDef> devicesList;
 
         public KeyValuePair<KeyDef, KeyDef> KeysUnderSetup;
+        public KeyMapOptions MappingOptions;
 
         public MapSetup()
         {
@@ -34,11 +46,10 @@ namespace KeyRemapper
             InitializeComponent();
 
             KeysUnderSetup = initialKeys;
-            
 
             SetUpComboBoxes();
 
-            RefreshLabels();
+            RefreshLabelsAndCheckboxes();
 
             if (!cmbDevice1.Items.Contains(initialKeys.Key.DeviceInfo.ToString()) || !cmbDevice2.Items.Contains(initialKeys.Value.DeviceInfo.ToString()))
             {
@@ -50,16 +61,62 @@ namespace KeyRemapper
             cmbDevice2.SelectedItem = initialKeys.Value.DeviceInfo.ToString();
         }
 
+        private void RefreshLabelsAndCheckboxes()
+        {
+            RefreshLabels();
+            RefreshCheckboxesAndMaps();
+        }
+
+        private void RefreshLabelsAndCheckboxesFrom()
+        {
+            RefreshLabelFrom();
+            RefreshCheckboxesAndMaps();
+        }
+
+        private void RefreshLabelsAndCheckboxesTo()
+        {
+            RefreshLabelTo();
+            RefreshCheckboxesAndMaps();
+        }
+
         private void RefreshLabels()
         {
-            lblKey1.Text = KeysUnderSetup.Key.Key + " (" +
-                           (KeysUnderSetup.Key.Key < KeyInterceptor.kbdus.Count
-                               ? Enum.GetName(typeof (Keys), KeyInterceptor.kbdus[KeysUnderSetup.Key.Key])
-                               : "") + ")";
-            lblKey2.Text = KeysUnderSetup.Value.Key + " (" +
-                           (KeysUnderSetup.Value.Key < KeyInterceptor.kbdus.Count
-                               ? Enum.GetName(typeof(Keys), KeyInterceptor.kbdus[KeysUnderSetup.Value.Key])
-                               : "") + ")";
+            RefreshLabelFrom();
+            RefreshLabelTo();
+        }
+
+        private void RefreshLabelTo()
+        {
+            if (KeysUnderSetup.Value.IgnoreKey)
+            {
+                lblKey2.Text = "[ Nothing ]";
+            }
+            else
+            {
+                lblKey2.Text = string.Format("{0} ({1})", KeysUnderSetup.Value.Key,
+                    (KeysUnderSetup.Value.Key < KeyInterceptor.kbdus.Count
+                        ? Enum.GetName(typeof(Keys), KeyInterceptor.kbdus[KeysUnderSetup.Value.Key])
+                        : ""));
+            }
+        }
+
+        private void RefreshLabelFrom()
+        {
+            lblKey1.Text = string.Format("{0} ({1})", KeysUnderSetup.Key.Key,
+                (KeysUnderSetup.Key.Key < KeyInterceptor.kbdus.Count
+                    ? Enum.GetName(typeof(Keys), KeyInterceptor.kbdus[KeysUnderSetup.Key.Key])
+                    : ""));
+        }
+
+        private void RefreshCheckboxesAndMaps()
+        {
+            chkE0FlagFrom.Checked = KeysUnderSetup.Key.FlagE0;
+            chkE1FlagFrom.Checked = KeysUnderSetup.Key.FlagE1;
+            chkE0FlagTo.Checked = KeysUnderSetup.Value.FlagE0;
+            chkE1FlagTo.Checked = KeysUnderSetup.Value.FlagE1;
+            numSignalCodeFrom.Value = KeysUnderSetup.Key.Key;
+            numSignalCodeTo.Value = KeysUnderSetup.Value.Key;
+            chkIgnore.Checked = KeysUnderSetup.Value.IgnoreKey;
         }
 
         private void SetUpComboBoxes()
@@ -167,8 +224,8 @@ namespace KeyRemapper
         {
             var key = AskForKey();
             setDeviceFor(cmbDevice1, key);
-            KeysUnderSetup.Key.Key = key.Key;
-            RefreshLabels();
+            key.MapKeyInto(KeysUnderSetup.Key);
+            RefreshLabelsAndCheckboxesFrom();
         }
 
         private void btnDetectDevice2_Click(object sender, EventArgs e)
@@ -181,22 +238,117 @@ namespace KeyRemapper
         {
             var key = AskForKey();
             setDeviceFor(cmbDevice2, key);
-            KeysUnderSetup.Value.Key = key.Key;
-            RefreshLabels();
+            key.MapKeyInto(KeysUnderSetup.Value);
+            RefreshLabelsAndCheckboxesTo();
         }
 
         private void btnDetectKey1_Click(object sender, EventArgs e)
         {
             var key = AskForKey();
-            KeysUnderSetup.Key.Key = key.Key;
-            RefreshLabels();
+            key.MapKeyInto(KeysUnderSetup.Key);
+            RefreshLabelsAndCheckboxesFrom();
         }
 
         private void btnDetectKey2_Click(object sender, EventArgs e)
         {
             var key = AskForKey();
-            KeysUnderSetup.Value.Key = key.Key;
-            RefreshLabels();
+            key.MapKeyInto(KeysUnderSetup.Value);
+            RefreshLabelsAndCheckboxesTo();
+        }
+
+        private void chkIgnore_CheckedChanged(object sender, EventArgs e)
+        {
+            KeysUnderSetup.Value.IgnoreKey = chkIgnore.Checked;
+            RefreshLabelsAndCheckboxesTo();
+        }
+
+        private void btnSetFrom_Click(object sender, EventArgs e)
+        {
+            KeysUnderSetup.Key.Key = (ushort) numSignalCodeFrom.Value;
+            RefreshLabelsAndCheckboxesFrom();
+        }
+
+        private void btnSetTo_Click(object sender, EventArgs e)
+        {
+            KeysUnderSetup.Value.Key = (ushort)numSignalCodeTo.Value;
+            RefreshLabelsAndCheckboxesTo();
+        }
+
+        private void btnNextTrack_Click(object sender, EventArgs e)
+        {
+            KeysUnderSetup.Value.Key = 0x19;
+            KeysUnderSetup.Value.FlagE0 = true;
+            RefreshLabelsAndCheckboxesTo();
+        }
+
+        private void btnPreviousTrack_Click(object sender, EventArgs e)
+        {
+            KeysUnderSetup.Value.Key = 0x10;
+            KeysUnderSetup.Value.FlagE0 = true;
+            RefreshLabelsAndCheckboxesTo();
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            KeysUnderSetup.Value.Key = 0x24;
+            KeysUnderSetup.Value.FlagE0 = true;
+            RefreshLabelsAndCheckboxesTo();
+        }
+
+        private void btnPlayPause_Click(object sender, EventArgs e)
+        {
+            KeysUnderSetup.Value.Key = 0x22;
+            KeysUnderSetup.Value.FlagE0 = true;
+            RefreshLabelsAndCheckboxesTo();
+        }
+
+        private void btnMute_Click(object sender, EventArgs e)
+        {
+            KeysUnderSetup.Value.Key = 0x20;
+            KeysUnderSetup.Value.FlagE0 = true;
+            RefreshLabelsAndCheckboxesTo();
+        }
+
+        private void btnVolUp_Click(object sender, EventArgs e)
+        {
+            KeysUnderSetup.Value.Key = 0x30;
+            KeysUnderSetup.Value.FlagE0 = true;
+            RefreshLabelsAndCheckboxesTo();
+        }
+
+        private void btnVolDown_Click(object sender, EventArgs e)
+        {
+            KeysUnderSetup.Value.Key = 0x2E;
+            KeysUnderSetup.Value.FlagE0 = true;
+            RefreshLabelsAndCheckboxesTo();
+        }
+
+        private void btnMediaSelect_Click(object sender, EventArgs e)
+        {
+            KeysUnderSetup.Value.Key = 0x6D;
+            KeysUnderSetup.Value.FlagE0 = true;
+            RefreshLabelsAndCheckboxesTo();
+        }
+
+        private void btnEmail_Click(object sender, EventArgs e)
+        {
+            KeysUnderSetup.Value.Key = 0x6C;
+            KeysUnderSetup.Value.FlagE0 = true;
+            RefreshLabelsAndCheckboxesTo();
+        }
+
+        private void btnCalculator_Click(object sender, EventArgs e)
+        {
+            KeysUnderSetup.Value.Key = 0x21;
+            KeysUnderSetup.Value.FlagE0 = true;
+            RefreshLabelsAndCheckboxesTo();
+        }
+
+        private void btnMyComputer_Click(object sender, EventArgs e)
+        {
+            KeysUnderSetup.Value.Key = 0x6B;
+            KeysUnderSetup.Value.FlagE0 = true;
+            RefreshLabelsAndCheckboxesTo();
         }
     }
 }
