@@ -333,42 +333,7 @@ namespace KeyRemapper.Mapper
 
         #endregion DLL Imports
 
-        #region Statics 
-        private static InterceptionKeyStroke ctrl_down = new InterceptionKeyStroke
-        {
-            code = 0x1D,
-            state = (ushort) (InterceptionKeyState.INTERCEPTION_KEY_DOWN | InterceptionKeyState.INTERCEPTION_KEY_E0)
-        };
-
-        private static InterceptionKeyStroke alt_down = new InterceptionKeyStroke
-        {
-            code = 0x38,
-            state = (ushort) (InterceptionKeyState.INTERCEPTION_KEY_DOWN | InterceptionKeyState.INTERCEPTION_KEY_E0)
-        };
-
-        private static InterceptionKeyStroke del_down = new InterceptionKeyStroke
-        {
-            code = 0x53,
-            state = (ushort) (InterceptionKeyState.INTERCEPTION_KEY_DOWN | InterceptionKeyState.INTERCEPTION_KEY_E0)
-        };
-
-        private static InterceptionKeyStroke ctrl_up = new InterceptionKeyStroke
-        {
-            code = 0x1D,
-            state = (ushort) (InterceptionKeyState.INTERCEPTION_KEY_UP)
-        };
-
-        private static InterceptionKeyStroke alt_up = new InterceptionKeyStroke
-        {
-            code = 0x38,
-            state = (ushort) (InterceptionKeyState.INTERCEPTION_KEY_UP)
-        };
-
-        private static InterceptionKeyStroke del_up = new InterceptionKeyStroke
-        {
-            code = 0x53,
-            state = (ushort) (InterceptionKeyState.INTERCEPTION_KEY_UP)
-        };
+        #region Statics
         #endregion Statics
 
         #region Constants
@@ -422,9 +387,11 @@ namespace KeyRemapper.Mapper
 
             if (interception_receive(context, device = interception_wait(context), stroke, 1) > 0)
             {
-                kdef.DeviceInfo = new DeviceDef() {DeviceIndex = device, HID = GetHardwareId(context, device)};
+                kdef.DeviceInfo = new DeviceDef {DeviceIndex = device, HID = GetHardwareId(context, device)};
                 var kstroke =(InterceptionKeyStroke)Marshal.PtrToStructure(stroke, typeof (InterceptionKeyStroke));
                 kdef.Key = kstroke.code;
+                kdef.FlagE0 = (kstroke.state & (ushort)InterceptionKeyState.INTERCEPTION_KEY_E0) != 0;
+                kdef.FlagE1 = (kstroke.state & (ushort)InterceptionKeyState.INTERCEPTION_KEY_E1) != 0;
             }
             interception_destroy_context(context);
 
@@ -466,7 +433,9 @@ namespace KeyRemapper.Mapper
                         mapper.RemapKey(new KeyDef
                         {
                             DeviceInfo = deviceHids.Single(d => d.DeviceIndex == device),
-                            Key = kstroke.code
+                            Key = kstroke.code,
+                            FlagE0 = IsE0(kstroke.state),
+                            FlagE1 = IsE1(kstroke.state)
                         });
                     if (deviceHids.Count(d => d.HID == newKey.DeviceInfo.HID) == 1)
                     {
@@ -478,13 +447,35 @@ namespace KeyRemapper.Mapper
                         interception_send(context, device, stroke, 1);
                         continue;
                     }
+                    
                     kstroke.code = newKey.Key;
+                    kstroke.state = SetState(InterceptionKeyState.INTERCEPTION_KEY_E0, newKey.FlagE0, kstroke.state);
+                    kstroke.state = SetState(InterceptionKeyState.INTERCEPTION_KEY_E1, newKey.FlagE1, kstroke.state);
                     Marshal.StructureToPtr(kstroke, stroke, true);
                     interception_send(context, newKey.DeviceInfo.DeviceIndex, stroke, 1);
                 }
             }
             interception_destroy_context(context);
             
+        }
+
+        private bool IsE0(ushort state)
+        {
+            return (state & (ushort)InterceptionKeyState.INTERCEPTION_KEY_E0) == 0;
+        }
+
+        private bool IsE1(ushort state)
+        {
+            return (state & (ushort)InterceptionKeyState.INTERCEPTION_KEY_E1) == 0;
+        }
+
+        private ushort SetState(InterceptionKeyState setState, bool toEnabled, ushort currentState)
+        {
+            if (toEnabled)
+            {
+                return (ushort) (currentState | (ushort) setState);
+            }
+            return (ushort) (currentState & (~(int) setState & 0xFFFF));
         }
     }
 }

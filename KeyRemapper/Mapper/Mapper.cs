@@ -76,32 +76,29 @@ namespace KeyRemapper.Mapper
 
         public KeyDef RemapKey(KeyDef key)
         {
-            if (MapDefinitions.Keys.Any(k => key.Key == k.Key && key.DeviceInfo.HID == k.DeviceInfo.HID))
+            if (!MapDefinitions.Keys.Any(k => key.DeviceInfo.HID == k.DeviceInfo.HID && k.KeyMatches(key))) return key;
+            
+            KeyDef keyInHash;
+            if (MapDefinitions.Keys.Count(k => key.DeviceInfo.HID == k.DeviceInfo.HID && k.KeyMatches(key)) == 1)
             {
-                KeyDef keyInHash;
-                if (MapDefinitions.Keys.Count(k => key.Key == k.Key && key.DeviceInfo.HID == k.DeviceInfo.HID) == 1)
+                keyInHash =
+                    MapDefinitions.Keys.Single(k => key.DeviceInfo.HID == k.DeviceInfo.HID && k.KeyMatches(key));
+            }
+            else
+            {
+                if (
+                    MapDefinitions.Keys.Count(k => key.DeviceInfo.ToString() == k.DeviceInfo.ToString() && k.KeyMatches(key)) == 1)
                 {
                     keyInHash =
-                        MapDefinitions.Keys.Single(k => key.Key == k.Key && key.DeviceInfo.HID == k.DeviceInfo.HID);
+                        MapDefinitions.Keys.Single(k => key.DeviceInfo.HID == k.DeviceInfo.HID && k.KeyMatches(key));
                 }
                 else
                 {
-                    if (
-                        MapDefinitions.Keys.Count(
-                            k => key.Key == k.Key && key.DeviceInfo.ToString() == k.DeviceInfo.ToString()) == 1)
-                    {
-                        keyInHash =
-                            MapDefinitions.Keys.Single(k => key.Key == k.Key && key.DeviceInfo.HID == k.DeviceInfo.HID);
-                    }
-                    else
-                    {
-                        return key;
-                    }
+                    return key;
                 }
-
-                return MapDefinitions[keyInHash];
             }
-            return key;
+
+            return MapDefinitions[keyInHash];
         }
     }
 }
