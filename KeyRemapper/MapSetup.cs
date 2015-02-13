@@ -147,8 +147,15 @@ namespace KeyRemapper
         {
             if (cmbDevice1.SelectedItem == null || cmbDevice2.SelectedItem == null)
             {
-                MessageBox.Show("You need to fill all the fields to set up a map.");
-                return;
+                if (cmbDevice1.SelectedItem != null && KeysUnderSetup.Value.IgnoreKey)
+                {
+                    cmbDevice2.SelectedItem = cmbDevice1.SelectedItem;
+                }
+                else
+                {
+                    MessageBox.Show("You need to fill all the fields to set up a map.");
+                    return;
+                }
             }
 
             try

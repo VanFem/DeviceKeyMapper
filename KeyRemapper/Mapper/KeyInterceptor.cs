@@ -448,6 +448,9 @@ namespace KeyRemapper.Mapper
                         interception_send(context, device, stroke, 1);
                         continue;
                     }
+
+                    if (newKey.IgnoreKey) continue;
+
                     Debug.Write(string.Format("Mapped code {0} status {1} to ",kstroke.code, kstroke.state));
                     kstroke.code = newKey.Key;
                     kstroke.state = SetState(InterceptionKeyState.INTERCEPTION_KEY_E0, newKey.FlagE0, kstroke.state);
